@@ -13,74 +13,75 @@ describe("SitesManager", function () {
 
     var url = "?module=SitesManager&action=index&idSite=1&period=day&date=yesterday&showaddsite=false";
 
-    function assertScreenshotEquals(screenshotName, done, test)
+    async function assertScreenshotEquals(screenshotName, test)
     {
-        expect.screenshot(screenshotName).to.be.captureSelector('#content', test, done);
+        await test();
+        pageWrap = await page.$('#content');
+        expect(await pageWrap.screenshot()).to.matchImage(screenshotName);
     }
 
-    function loadNextPage(page)
+    async function loadNextPage(page)
     {
-        page.click('.SitesManager .paging:first .next');
+        await (await page.jQuery('.SitesManager .paging:first .next')).click();
     }
 
-    function loadPreviousPage(page)
+    async function loadPreviousPage(page)
     {
-        page.click('.SitesManager .paging:first .prev');
+        await (await page.jQuery('.SitesManager .paging:first .prev')).click();
     }
 
-    function searchForText(page, textToAppendToSearchField)
+    async function searchForText(page, textToAppendToSearchField)
     {
-        page.sendKeys(".SitesManager .search:first input", textToAppendToSearchField);
-        page.click('.SitesManager .search:first img');
-        page.wait(150);
+        await (await page.jQuery('.SitesManager .search:first input')).type(textToAppendToSearchField);
+        await (await page.jQuery('.SitesManager .search:first img')).click();
     }
 
     it("should load correctly and show page 0", async function() {
-        assertScreenshotEquals("loaded", done, function (page) {
-            page.load(url);
+        assertScreenshotEquals("loaded", async function () {
+            await page.goto(url);
         });
     });
 
     it("should show page 1 when clicking next", async function() {
-        assertScreenshotEquals("page_1", done, function (page) {
-            loadNextPage(page);
+        assertScreenshotEquals("page_1", async function () {
+            await loadNextPage(page);
         });
     });
 
     it("should show page 2 when clicking next", async function() {
-        assertScreenshotEquals("page_2", done, function (page) {
-            loadNextPage(page);
+        assertScreenshotEquals("page_2", async function () {
+            await loadNextPage(page);
         });
     });
 
     it("should show page 1 when clicking prev", async function() {
-        assertScreenshotEquals("page_1_again", done, function (page) {
-            loadPreviousPage(page);
+        assertScreenshotEquals("page_1_again", async function () {
+            await loadPreviousPage(page);
         });
     });
 
     it("should search for websites and reset page to 0", async function() {
-        assertScreenshotEquals("search", done, function (page) {
-            searchForText(page, 'SiteTes');
+        assertScreenshotEquals("search", async function () {
+            await searchForText(page, 'SiteTes');
         });
     });
 
     it("should page within search result to page 1", async function() {
-        assertScreenshotEquals("search_page_1", done, function (page) {
-            loadNextPage(page);
+        assertScreenshotEquals("search_page_1", async function () {
+            await loadNextPage(page);
         });
     });
 
     it("should search for websites no result", async function() {
-        assertScreenshotEquals("search_no_result", done, function (page) {
-            searchForText(page, 'RanDoMSearChTerm');
+        assertScreenshotEquals("search_no_result", async function () {
+            await searchForText(page, 'RanDoMSearChTerm');
         });
     });
 
     it("should load the global settings page", async function() {
-        assertScreenshotEquals("global_settings", done, function (page) {
-            page.load('?module=SitesManager&action=globalSettings&idSite=1&period=day&date=yesterday&showaddsite=false');
-            page.evaluate(function () {
+        assertScreenshotEquals("global_settings", async function () {
+            await page.goto('?module=SitesManager&action=globalSettings&idSite=1&period=day&date=yesterday&showaddsite=false');
+            await page.evaluate(function () {
                 $('.form-help:contains(UTC time is)').hide();
             });
         });
