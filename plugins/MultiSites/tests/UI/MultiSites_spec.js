@@ -26,7 +26,7 @@ describe("MultiSitesTest", function () {
 
         for (var i = 0; i < 50; i++) {
             var response = await testEnvironment.callApi("SitesManager.addSite", {
-                siteName: 'dynamically created website ' + i,
+                siteName: 'dynamically created page ' + i,
                 urls: 'http%3A%2F%2Fpiwik.org%2F' + i
             });
 
@@ -50,6 +50,7 @@ describe("MultiSitesTest", function () {
 
     it('should load next page correctly', async function() {
         await page.click('.paging .next');
+        await page.mouse.move(-10, -10);
         await page.waitForNetworkIdle();
 
         expect(await page.screenshotSelector(selector)).to.matchImage('all_websites_page_1');
@@ -58,6 +59,7 @@ describe("MultiSitesTest", function () {
     it('should search correctly', async function() {
         await page.type('.site_search input', 'Site');
         await page.click('.site_search .search_ico');
+        await page.mouse.move(-10, -10);
         await page.waitForNetworkIdle();
 
         expect(await page.screenshotSelector(selector)).to.matchImage('all_websites_search');
@@ -65,6 +67,7 @@ describe("MultiSitesTest", function () {
 
     it('should toggle sort order when click on current metric', async function() {
         await page.click('#visits .heading');
+        await page.mouse.move(-10, -10);
         await page.waitForNetworkIdle();
 
         expect(await page.screenshotSelector(selector)).to.matchImage('all_websites_changed_sort_order');
