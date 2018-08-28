@@ -261,7 +261,7 @@ describe("PrivacyManager", function () {
 
     it('should ask for confirmation before deleting any visit', async function() {
         await deleteDataSubjects(page);
-        await capturePage('gdpr_tools_delete_visit_unconfirmed');
+        expect(await page.screenshotSelector('.modal.open')).to.matchImage('gdpr_tools_delete_visit_unconfirmed');
     });
 
     it('should be able to cancel deletion and not delete any data', async function() {
