@@ -203,13 +203,18 @@ describe("UIIntegrationTest", function () { // TODO: Rename to Piwik?
                     + "&showDateTime=0&realtimeWindow=last2&changeVisitAlpha=0&enableAnimation=0&doNotRefreshVisits=1"
                     + "&removeOldVisits=0");
         await page.waitForSelector('circle');
-        circle = await page.$('circle');
+        console.log(1);
+        var circle = await page.$('circle');
+        console.log(2);
         await circle.hover();
+        console.log(3);
         await page.evaluate(function(){
             $('.ui-tooltip:visible .rel-time').data('actiontime', Math.floor(new Date((new Date()).getTime()-(4*3600*24000))/1000));
         });
+        console.log(4);
 
         pageWrap = await page.$('.pageWrap');
+        console.log(5);
         expect(await pageWrap.screenshot()).to.matchImage('visitors_realtime_map');
     });
 
