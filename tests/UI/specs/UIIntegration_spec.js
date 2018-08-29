@@ -202,25 +202,21 @@ describe("UIIntegrationTest", function () { // TODO: Rename to Piwik?
         await page.goto("?" + urlBase + "#?" + idSite2Params + "&category=General_Visitors&subcategory=UserCountryMap_RealTimeMap"
                     + "&showDateTime=0&realtimeWindow=last2&changeVisitAlpha=0&enableAnimation=0&doNotRefreshVisits=1"
                     + "&removeOldVisits=0");
-        await page.waitForSelector('circle');
-        console.log(1);
-        var circle = await page.$('circle');
-        console.log(2);
-        await circle.hover();
-        console.log(3);
+        await page.waitFor(500);
+        await page.mouse.move(520, 323);
+        await page.waitFor(100); // wait for tooltip
         await page.evaluate(function(){
             $('.ui-tooltip:visible .rel-time').data('actiontime', Math.floor(new Date((new Date()).getTime()-(4*3600*24000))/1000));
         });
-        console.log(4);
 
         pageWrap = await page.$('.pageWrap');
-        console.log(5);
         expect(await pageWrap.screenshot()).to.matchImage('visitors_realtime_map');
     });
 
     // actions pages
     it('should load the actions > pages page correctly', async function () {
         await page.goto("?" + urlBase + "#?" + generalParams + "&category=General_Actions&subcategory=General_Pages");
+        await page.mouse.move(-10, -10);
         await page.waitForNetworkIdle();
 
         pageWrap = await page.$('.pageWrap');
