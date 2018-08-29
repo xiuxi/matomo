@@ -33,7 +33,7 @@ describe('SingleMetricView', function () {
     });
 
     it('should handle formatted metrics properly', async function () {
-        var elem = await page.waitForSelector('#widgetCoreVisualizationssingleMetricViewcolumn .single-metric-view-picker');
+        var elem = await page.jQuery('#widgetCoreVisualizationssingleMetricViewcolumn .single-metric-view-picker:visible');
         await elem.hover();
         console.log(1);
         await page.waitFor(100); // wait for popover visible
