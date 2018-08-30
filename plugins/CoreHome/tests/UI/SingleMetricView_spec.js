@@ -33,8 +33,8 @@ describe('SingleMetricView', function () {
     });
 
     it('should handle formatted metrics properly', async function () {
-        var elem = await page.jQuery('#widgetCoreVisualizationssingleMetricViewcolumn .single-metric-view-picker:visible');
-        await elem.hover();
+        await page.mouse.move(0, 0);
+        await page.hover('.jqplot-seriespicker');
         console.log(1);
         await page.waitFor(100); // wait for popover visible
         await (await page.jQuery('.jqplot-seriespicker-popover label:contains(Revenue)')).click();
@@ -45,6 +45,7 @@ describe('SingleMetricView', function () {
     });
 
     it('should handle individual goal metrics properly', async function () {
+        await page.mouse.move(0, 0);
         var elem = await page.waitForSelector('#widgetCoreVisualizationssingleMetricViewcolumn .single-metric-view-picker');
         await elem.hover();
         await (await page.jQuery('.jqplot-seriespicker-popover label:contains(two - Conversions)')).click();
