@@ -202,6 +202,7 @@ describe("UIIntegrationTest", function () { // TODO: Rename to Piwik?
         await page.goto("?" + urlBase + "#?" + idSite2Params + "&category=General_Visitors&subcategory=UserCountryMap_RealTimeMap"
                     + "&showDateTime=0&realtimeWindow=last2&changeVisitAlpha=0&enableAnimation=0&doNotRefreshVisits=1"
                     + "&removeOldVisits=0");
+        await page.waitForSelector('circle');
         await page.waitFor(500);
         await page.mouse.move(520, 323);
         await page.waitFor(100); // wait for tooltip
@@ -859,13 +860,15 @@ describe("UIIntegrationTest", function () { // TODO: Rename to Piwik?
         await page.goto("?" + widgetizeParams + "&" + idSite2Params + "&moduleToWidgetize=Live&actionToWidgetize=getVisitorProfilePopup"
                 + "&enableAnimation=0");
 
+        await page.waitFor(100);
+
         await page.evaluate(function () {
             $(document).ready(function () {
                 $('.visitor-profile-show-map').click();
             });
         });
 
-        await page.waitFor(1000);
+        await page.waitFor(100);
 
         expect(await page.screenshot({ fullPage: true })).to.matchImage('visitor_profile_popup');
     });
